@@ -92,8 +92,10 @@
 
 <body>
 
-<audio autoplay loop>
-    <source src="Day dreamer theme music.mp3" type="audio/mpeg">
+<!-- Audio: removed autoplay to avoid browser blocks. Will play on user interaction. -->
+<audio id="bgAudio" loop preload="auto" controls style="display:none">
+    <source src="day-dreamer-theme-music.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
 </audio>
 
 <div class="overlay">
@@ -116,7 +118,9 @@
     const noBtn = document.getElementById('noBtn');
     const yesBtn = document.getElementById('yesBtn');
     const msg = document.getElementById('loveMsg');
+    const audioEl = document.getElementById('bgAudio');
 
+    // Move the No button away on hover / touch
     noBtn.addEventListener('mouseover', moveNo);
     noBtn.addEventListener('touchstart', moveNo);
 
@@ -126,7 +130,29 @@
         noBtn.style.transform = `translate(${x}px, ${y}px)`;
     }
 
+    // Try to play audio on first user interaction (click or touch)
+    function tryPlayAudio() {
+        if (!audioEl) return;
+        // Make controls visible if playback is blocked so user can manually play
+        audioEl.style.display = 'none'; // keep hidden by default
+        audioEl.play().catch(err => {
+            console.log('Autoplay blocked or playback failed:', err);
+            // show controls so user can start playback manually
+            audioEl.style.display = 'block';
+        });
+        document.removeEventListener('click', tryPlayAudio);
+        document.removeEventListener('touchstart', tryPlayAudio);
+    }
+
+    document.addEventListener('click', tryPlayAudio, { once: true });
+    document.addEventListener('touchstart', tryPlayAudio, { once: true });
+
     yesBtn.addEventListener('click', () => {
+        // Ensure audio is started when user explicitly interacts
+        if (audioEl) {
+            audioEl.play().catch(e => console.log('Play blocked:', e));
+        }
+
         msg.style.display = 'block';
         yesBtn.style.display = 'none';
         noBtn.style.display = 'none';
@@ -146,6 +172,19 @@
             heart.remove();
         }, 7000);
     }, 400);
+
+    // If the background image is missing, fall back to a pleasant gradient
+    (function checkBackgroundImage() {
+        const img = new Image();
+        img.src = '1000171350.jpg';
+        img.onload = function() {
+            // image exists - nothing to do
+        };
+        img.onerror = function() {
+            document.body.style.background = 'linear-gradient(135deg,#ff9a9e,#fecfef)';
+            document.body.style.backgroundSize = 'cover';
+        };
+    })();
 </script>
 
 </body>
