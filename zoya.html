@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Be My Valentine 💟</title>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+        height: 100vh;
+        background: url('1000171350.jpg') no-repeat center center/cover;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .overlay {
+        background: rgba(0, 0, 0, 0.55);
+        padding: 25px;
+        border-radius: 20px;
+        text-align: center;
+        width: 90%;
+        max-width: 400px;
+        color: #fff;
+    }
+
+    h1 {
+        font-size: 1.6rem;
+        margin-bottom: 20px;
+    }
+
+    .buttons {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 20px;
+        position: relative;
+    }
+
+    button {
+        padding: 12px 24px;
+        font-size: 1rem;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    #yesBtn {
+        background: #ff4d6d;
+        color: #fff;
+    }
+
+    #noBtn {
+        background: #444;
+        color: #fff;
+        position: absolute;
+        right: 0;
+    }
+
+    .message {
+        display: none;
+        font-size: 1rem;
+        margin-top: 20px;
+        line-height: 1.6;
+    }
+
+    .heart {
+        position: absolute;
+        font-size: 20px;
+        animation: float 6s linear infinite;
+        opacity: 0.8;
+    }
+
+    @keyframes float {
+        from {
+            transform: translateY(100vh);
+        }
+        to {
+            transform: translateY(-10vh);
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<audio autoplay loop>
+    <source src="Day dreamer theme music.mp3" type="audio/mpeg">
+</audio>
+
+<div class="overlay">
+    <h1>Will you be my Valentine? 💟</h1>
+
+    <div class="buttons">
+        <button id="yesBtn">Yes 🤍</button>
+        <button id="noBtn">No 🖤</button>
+    </div>
+
+    <div class="message" id="loveMsg">
+        I knew you will say yes 💕<br><br>
+        Just like how the waves kiss the shore, that's how I'll always come back to you 🌊<br>
+        In every breath, you are there 🦋<br>
+        You're the story which I never stopped loving.. 🪽
+    </div>
+</div>
+
+<script>
+    const noBtn = document.getElementById('noBtn');
+    const yesBtn = document.getElementById('yesBtn');
+    const msg = document.getElementById('loveMsg');
+
+    noBtn.addEventListener('mouseover', moveNo);
+    noBtn.addEventListener('touchstart', moveNo);
+
+    function moveNo() {
+        const x = Math.random() * 200 - 100;
+        const y = Math.random() * 200 - 100;
+        noBtn.style.transform = `translate(${x}px, ${y}px)`;
+    }
+
+    yesBtn.addEventListener('click', () => {
+        msg.style.display = 'block';
+        yesBtn.style.display = 'none';
+        noBtn.style.display = 'none';
+    });
+
+    // floating hearts
+    const emojis = ['🤍', '🖤'];
+    setInterval(() => {
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+        document.body.appendChild(heart);
+
+        setTimeout(() => {
+            heart.remove();
+        }, 7000);
+    }, 400);
+</script>
+
+</body>
+</html>
